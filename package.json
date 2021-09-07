@@ -1,0 +1,23 @@
+{
+  "name": "grupp2-socket",
+  "version": "1.0.0",
+  "description": "inlämning 2 grupparbete med socket.io",
+  "main": "index.js",
+  "scripts": {
+    "client-install": "npm install --prefix client",
+    "server-install": "npm install --prefix server",
+    "install": "npm run server-install && npm run client-install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AntonM143/Grupp2-socket.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AntonM143/Grupp2-socket/issues"
+  },
+  "homepage": "https://github.com/AntonM143/Grupp2-socket#readme"
+}
