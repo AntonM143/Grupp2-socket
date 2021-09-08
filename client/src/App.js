@@ -1,7 +1,7 @@
 import Layout from './components/Layout';
 import ChatList from './components/chat/ChatList';
 import { io } from "socket.io-client"
-import { useEffect } from "react"
+import { useEffect,useState } from "react"
 
 
 const dummy_data = [
@@ -79,8 +79,15 @@ const dummy_data = [
 
 function App() {
 
+ 
+let name = "anton"
   useEffect(() => {
     const socket = io("http://localhost:8000")
+    /* test */
+    socket.emit("username", {name: name})
+    
+    
+
     
   }, )
 
