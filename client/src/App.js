@@ -1,5 +1,8 @@
 import Layout from './components/Layout';
 import ChatList from './components/chat/ChatList';
+import { io } from "socket.io-client"
+import { useEffect } from "react"
+
 
 const dummy_data = [
   {
@@ -75,6 +78,12 @@ const dummy_data = [
 ]
 
 function App() {
+
+  useEffect(() => {
+    const socket = io("http://localhost:8000")
+    
+  }, )
+
   return (
     <Layout>
       <ChatList messageData={dummy_data} />
