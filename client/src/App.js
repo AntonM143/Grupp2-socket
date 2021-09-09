@@ -15,12 +15,18 @@ function App() {
   const [isTyping, setIsTyping] = useState({name: "", isTyping: false})
   const [socket, setSocket] = useState(null)
   const [enteredMessage, setEnteredMessage] = useState("");
-  console.log(enteredMessage)
+  console.log(enteredMessage, "🤷‍♀️")
   const [chatMessage, setChatMessage] = useState([]);
 
   useEffect(() => {
     const socket = io("http://localhost:8000");
     setSocket(socket)
+    socket.on("message", (message) => {
+      setChatMessage([...chatMessage, message])
+    })
+    socket.on("isTyping", (message) =>{
+      setIsTyping(message)
+    })
   },[]);
  
   const enteredMessageHandler = (currentValue) =>{
@@ -39,12 +45,8 @@ function App() {
     } 
 
     if(socket) {
-      socket.on("message", (message) => {
-        setChatMessage([...chatMessage, message])
-      })
-      socket.on("isTyping", (message) =>{
-        setIsTyping(message)
-      })
+      
+     
     }
  
   return (

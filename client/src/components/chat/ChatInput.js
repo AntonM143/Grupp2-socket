@@ -3,13 +3,14 @@ import { FaRegPaperPlane } from "react-icons/fa";
 import ChatCommandModule from "./ChatCommandModule";
 
 
-const ChatInput = ({message, onEnteredMessage, onSendMessage}) => {
+const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIsTyping}) => {
 const [toggleCommandModule, setToggleCommandModule] = useState(false)
 
  const inputHandler = (e) =>{
   onEnteredMessageHandler(e.target.value)
  }
- const sendMessage = () =>{
+ const sendMessage = (e) =>{
+   e.preventDefault()
   onSendMessage()
  }
 
