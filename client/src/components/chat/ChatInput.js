@@ -3,8 +3,8 @@ import { FaRegPaperPlane } from "react-icons/fa";
 
 const ChatInput = () => {
   return (
-    <div className="container mx-auto bg-gray-800 xl:w-3/6">
-      <div className="flex content-center justify-center container mx-auto ">
+    <div className="container mx-auto bg-gray-800">
+      <div className="flex content-center justify-center mx-auto">
         <div className="flex break-normal justify-between w-full text-gray-50 px-4 my-5 py-3 font-semibold rounded-xl bg-gray-600">
           <div
             contentEditable="true"

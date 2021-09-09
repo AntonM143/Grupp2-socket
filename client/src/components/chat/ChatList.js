@@ -12,7 +12,7 @@ const ChatList = ( {messageData} ) => {
 
   return (
     <div ref={scrollElement} 
-      className="flex flex-auto flex-col container mx-auto overflow-auto xl:w-3/6">
+      className="flex flex-auto flex-col container mx-auto overflow-auto">
       {messageData.map((message) => (
         <div key={message.id}>
           <ChatItem 
