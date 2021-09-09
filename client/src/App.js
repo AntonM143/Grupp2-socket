@@ -3,7 +3,7 @@ import { io } from "socket.io-client"
 import Layout from './components/Layout';
 import ChatInput from "./components/chat/ChatInput";
 import ChatList from './components/chat/ChatList';
-
+import { v4 as uuid } from "uuid";
 
 const dummy_data = [
   {
@@ -114,19 +114,31 @@ const dummy_data = [
 ]
 
 function App() {
-
+  function date () {
+    let today = new Date();
+  let time = today.getHours() + ":" + today.getMinutes()
+  return time
+  
+  }
+  const [chatMessage, setChatMessage] = useState([{
+    id: uuid(),
+    username: 'Pelle',
+    sendDate: date(),
+    imgUrl: '1',
+    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ',
+  }],)
 let name = "anton"
   useEffect(() => {
     const socket = io("http://localhost:8000")
     /* test */
-    socket.emit("username", {name: name})
+    socket.emit("username", {name: chatMessage.username})
     
     
   }, )
 
   return (
     <Layout>
-      <ChatList messageData={dummy_data} />
+      <ChatList messageData={chatMessage} />
       <ChatInput />
     </Layout>
   );
