@@ -12,7 +12,7 @@ const ChatItem = ({ username, sendDate, message, imgUrl }) => {
         <div className="flex flex-col">
           <header className="flex items-center mb-1">
             <h1 className="font-bold text-xl text-yellow-400">{username}</h1>
-            <p className="font-extralight px-3 text-xs italic text-gray-400">{sendDate}:00</p>
+            <p className="font-extralight px-3 text-xs italic text-gray-400">{sendDate}</p>
           </header>
             <p className="text-gray-50 font-semibold">{message}</p>
         </div>
