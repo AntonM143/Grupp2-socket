@@ -1,10 +1,11 @@
-import React from 'react'
+import React,{ useState } from 'react'
 import { FaRegPaperPlane } from "react-icons/fa";
-import { Socket } from 'socket.io-client';
+import ChatCommandModule from "./ChatCommandModule";
 
-const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIsTyping }) => {
- 
-console.log(onIsTyping, "🎶")
+
+const ChatInput = ({message, onEnteredMessage, onSendMessage}) => {
+const [toggleCommandModule, setToggleCommandModule] = useState(false)
+
  const inputHandler = (e) =>{
   onEnteredMessageHandler(e.target.value)
  }
@@ -14,6 +15,7 @@ console.log(onIsTyping, "🎶")
 
   return (
     <div className="container mx-auto bg-gray-800">
+      {toggleCommandModule && <ChatCommandModule />}
       <div className="flex content-center justify-center mx-auto">
         <div className="flex break-normal justify-between w-full text-gray-50 px-4 my-5 py-3 font-semibold rounded-xl bg-gray-600">
         {onIsTyping.isTyping && onIsTyping.name + ' is typing..'}
