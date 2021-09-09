@@ -1,12 +1,12 @@
 import React from 'react';
 
-const ChatItem = ({ username, sendDate, message, imgUrl }) => {
+const ChatItem = ({ username, sendDate, message, avatar, imageUrl }) => {
   return (
     <>
       <div className="flex pt-6">
         <div className="flex items-start mx-3">   
           <div className="w-16">
-            <img className="object-contain h-full w-full" src={require(`../../assets/${imgUrl}.png`).default} alt="" />
+            {/* <img className="object-contain h-full w-full" src={require(`../../assets/${avatar}.png`).default} alt="" /> */}
           </div>
         </div>
         <div className="flex flex-col">
@@ -15,6 +15,7 @@ const ChatItem = ({ username, sendDate, message, imgUrl }) => {
             <p className="font-extralight px-3 text-xs italic text-gray-400">{sendDate}</p>
           </header>
             <p className="text-gray-50 font-semibold">{message}</p>
+            <img src={imageUrl} alt="" />
         </div>
       </div>
     </>
