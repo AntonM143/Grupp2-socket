@@ -9,7 +9,10 @@ function listen(io){
         /* disconnect, kan lägga till användarens namn här sen?*/
         socket.on("disconnect", (reason) =>  {
             console.log(`user disconnected ${socket.id}, reason: ${reason}`)
-
+        })
+        socket.on("message", (message)=>{
+            io.emit("message", message)
+            
         })
     })
 }
