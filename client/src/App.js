@@ -1,7 +1,8 @@
-import Layout from './components/Layout';
-import ChatList from './components/chat/ChatList';
+import { useEffect } from "react"
 import { io } from "socket.io-client"
-import { useEffect,useState } from "react"
+import Layout from './components/Layout';
+import ChatInput from "./components/chat/ChatInput";
+import ChatList from './components/chat/ChatList';
 
 
 const dummy_data = [
@@ -46,7 +47,7 @@ const dummy_data = [
     sendDate: new Date().getHours(),
     imgUrl: '1',
     message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore impedit quaerat quibusdam animi aperiam, error nam repellat saepe magnam iusto. Rerum quae impedit consequuntur autem ad aut, dignissimos tempora quo?',
-  },
+  }, 
   {
     id:'7',
     username: 'Anton',
@@ -94,6 +95,7 @@ let name = "anton"
   return (
     <Layout>
       <ChatList messageData={dummy_data} />
+      <ChatInput />
     </Layout>
   );
 }

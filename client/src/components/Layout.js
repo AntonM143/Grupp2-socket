@@ -2,7 +2,7 @@ import React from 'react'
 
 const Layout = (props) => {
   return (
-    <div className="bg-gray-800 w-screen h-screen overflow-x-auto">
+    <div className="flex flex-col w-screen h-screen bg-gray-800">
       {props.children}
     </div>
   )
