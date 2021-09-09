@@ -12,6 +12,7 @@ function App() {
     let time = today.getHours() + ":" + today.getMinutes();
     return time;
   }
+  const [isTyping, setIsTyping] = useState({name: "", isTyping: false})
   const [socket, setSocket] = useState(null)
   const [enteredMessage, setEnteredMessage] = useState("");
   console.log(enteredMessage)
@@ -21,30 +22,35 @@ function App() {
     const socket = io("http://localhost:8000");
     setSocket(socket)
   },[]);
-  
+ 
   const enteredMessageHandler = (currentValue) =>{
-      setEnteredMessage(currentValue)
-      console.log(currentValue)
+    setEnteredMessage(currentValue)
+    socket.emit("isTyping", {isTyping: true})
     }
     const sendMessage = () =>{
       socket.emit("message", {
         id: uuid(),
         username: "Pelle",
         sendDate: date(),
-        imgUrl: Math.floor(Math.random()* 4),
+        imgUrl: 1,
         message: enteredMessage,})
+        setEnteredMessage("")
+        socket.emit("isTyping", {isTyping: false})
     } 
 
     if(socket) {
       socket.on("message", (message) => {
         setChatMessage([...chatMessage, message])
       })
+      socket.on("isTyping", (message) =>{
+        setIsTyping(message)
+      })
     }
-    
+ 
   return (
     <Layout>
       <ChatList messageData={chatMessage} />
-      <ChatInput onEnteredMessage={enteredMessageHandler} message={enteredMessage} onSendMessage={sendMessage}/>
+      <ChatInput onEnteredMessageHandler={enteredMessageHandler} enteredMessage={enteredMessage} onSendMessage={sendMessage} onIsTyping={isTyping} />
     </Layout>
   );
 }

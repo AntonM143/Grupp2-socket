@@ -12,7 +12,9 @@ function listen(io){
         })
         socket.on("message", (message)=>{
             io.emit("message", message)
-            
+        })
+        socket.on("isTyping", (message) =>{
+            socket.broadcast.emit("isTyping", message)
         })
     })
 }
