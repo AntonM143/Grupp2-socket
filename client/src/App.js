@@ -1,7 +1,8 @@
-import Layout from './components/Layout';
-import ChatList from './components/chat/ChatList';
+import { useEffect } from "react"
 import { io } from "socket.io-client"
-import { useEffect,useState } from "react"
+import Layout from './components/Layout';
+import ChatInput from "./components/chat/ChatInput";
+import ChatList from './components/chat/ChatList';
 
 
 const dummy_data = [
@@ -46,7 +47,7 @@ const dummy_data = [
     sendDate: new Date().getHours(),
     imgUrl: '1',
     message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore impedit quaerat quibusdam animi aperiam, error nam repellat saepe magnam iusto. Rerum quae impedit consequuntur autem ad aut, dignissimos tempora quo?',
-  },
+  }, 
   {
     id:'7',
     username: 'Anton',
@@ -75,11 +76,45 @@ const dummy_data = [
     imgUrl: '2',
     message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore impedit quaerat quibusdam animi aperiam, error nam repellat saepe magnam iusto. Rerum quae impedit consequuntur autem ad aut, dignissimos tempora quo? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti ducimus architecto quidem eligendi voluptatem quibusdam nisi, facilis quas id cupiditate debitis illo ab dicta, ut sit in perferendis alias temporibus?' ,
   },
+  {
+    id:'11',
+    username: 'Anton',
+    sendDate: new Date().getHours(),
+    imgUrl: '2',
+    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore impedit quaerat quibusdam animi aperiam, error nam repellat saepe magnam iusto. Rerum quae impedit consequuntur autem ad aut, dignissimos tempora quo? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti ducimus architecto quidem eligendi voluptatem quibusdam nisi, facilis quas id cupiditate debitis illo ab dicta, ut sit in perferendis alias temporibus?' ,
+  },
+  {
+    id:'12',
+    username: 'Anton',
+    sendDate: new Date().getHours(),
+    imgUrl: '2',
+    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore impedit quaerat quibusdam animi aperiam, error nam repellat saepe magnam iusto. Rerum quae impedit consequuntur autem ad aut, dignissimos tempora quo? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti ducimus architecto quidem eligendi voluptatem quibusdam nisi, facilis quas id cupiditate debitis illo ab dicta, ut sit in perferendis alias temporibus?' ,
+  },
+  {
+    id:'13',
+    username: 'Anton',
+    sendDate: new Date().getHours(),
+    imgUrl: '2',
+    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore impedit quaerat quibusdam animi aperiam, error nam repellat saepe magnam iusto. Rerum quae impedit consequuntur autem ad aut, dignissimos tempora quo? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti ducimus architecto quidem eligendi voluptatem quibusdam nisi, facilis quas id cupiditate debitis illo ab dicta, ut sit in perferendis alias temporibus?' ,
+  },
+  {
+    id:'14',
+    username: 'Anton',
+    sendDate: new Date().getHours(),
+    imgUrl: '2',
+    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore impedit quaerat quibusdam animi aperiam, error nam repellat saepe magnam iusto. Rerum quae impedit consequuntur autem ad aut, dignissimos tempora quo? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti ducimus architecto quidem eligendi voluptatem quibusdam nisi, facilis quas id cupiditate debitis illo ab dicta, ut sit in perferendis alias temporibus?' ,
+  },
+  {
+    id:'15',
+    username: 'Anton',
+    sendDate: new Date().getHours(),
+    imgUrl: '2',
+    message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore impedit quaerat quibusdam animi aperiam, error nam repellat saepe magnam iusto. Rerum quae impedit consequuntur autem ad aut, dignissimos tempora quo? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti ducimus architecto quidem eligendi voluptatem quibusdam nisi, facilis quas id cupiditate debitis illo ab dicta, ut sit in perferendis alias temporibus?' ,
+  }, 
 ]
 
 function App() {
 
- 
 let name = "anton"
   useEffect(() => {
     const socket = io("http://localhost:8000")
@@ -87,13 +122,12 @@ let name = "anton"
     socket.emit("username", {name: name})
     
     
-
-    
   }, )
 
   return (
     <Layout>
       <ChatList messageData={dummy_data} />
+      <ChatInput />
     </Layout>
   );
 }
