@@ -1,6 +1,8 @@
 import React from 'react';
 
-const ChatItem = ({ username, sendDate, message, avatar }) => {
+
+const ChatItem = ({ username, sendDate, message, avatar, imageUrl }) => {
+
   return (
     <>
       <div className="flex pt-6">
@@ -15,6 +17,7 @@ const ChatItem = ({ username, sendDate, message, avatar }) => {
             <p className="font-extralight px-3 text-xs italic text-gray-400">{sendDate}</p>
           </header>
             <p className="text-gray-50 font-semibold">{message}</p>
+            <img src={imageUrl} alt="" />
         </div>
       </div>
     </>

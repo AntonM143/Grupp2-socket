@@ -13,7 +13,9 @@ function listen(io){
         socket.on("message", (message)=>{
             console.log(message, '🌕')
             io.emit("message", message)
+            console.log(message)
         })
+        
         socket.on("isTyping", (message) =>{
             socket.broadcast.emit("isTyping", message)
         })

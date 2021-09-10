@@ -3,20 +3,44 @@ import { FaRegPaperPlane } from "react-icons/fa";
 import ChatCommandModule from "./ChatCommandModule";
 
 
-const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIsTyping}) => {
-const [toggleCommandModule, setToggleCommandModule] = useState(false)
+const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIsTyping, onSendItem}) => {
+  const [toggleCommandModule, setToggleCommandModule] = useState(false)
+  const [reqType, setReqType] = useState("")
 
- const inputHandler = (e) =>{
+   const inputHandler = (e) =>{
   onEnteredMessageHandler(e.target.value)
+  
+  if(e.target.value === "/"){
+    console.log("👀")
+    setToggleCommandModule(true)
+  }
+  
+  if(e.target.value === "/gif"){
+    setReqType("/gif")
+    
+  }
+  if(e.target.value === "/img"){
+    setReqType("/img")
+    
+  }
+  if(e.target.value === ""){
+    console.log("🤷‍♂️")
+    setToggleCommandModule(false)
+    
+  }
+  
  }
  const sendMessage = (e) =>{
    e.preventDefault()
   onSendMessage()
  }
+ const onClose = () =>{
+  setToggleCommandModule(false)
+}
 
   return (
     <div className="container mx-auto bg-gray-800">
-      {toggleCommandModule && <ChatCommandModule />}
+      {toggleCommandModule && <ChatCommandModule onClose={onClose} reqType={reqType} enteredMessage={enteredMessage} onSendItem={onSendItem}  />}
       <div className="flex content-center justify-center mx-auto">
         <div className="flex break-normal justify-between w-full text-gray-50 px-4 my-5 py-3 font-semibold rounded-xl bg-gray-600">
         {onIsTyping.isTyping && onIsTyping.name + ' is typing..'}
