@@ -4,19 +4,18 @@ import Layout from "./components/Layout";
 import ChatInput from "./components/chat/ChatInput";
 import ChatList from "./components/chat/ChatList";
 import { v4 as uuid } from "uuid";
+import date from "./components/handlers/date";
 
 
 function App() {
-  function date() {
-    let today = new Date();
-    let time = today.getHours() + ":" + today.getMinutes();
-    return time;
-  }
+
+ 
   const [isTyping, setIsTyping] = useState({name: "", isTyping: false})
   const [socket, setSocket] = useState(null)
   const [enteredMessage, setEnteredMessage] = useState("");
-  console.log(enteredMessage, "🤷‍♀️")
+  const [user, setUser] = useState({username: "Olle", avatar: 1})
   const [chatMessage, setChatMessage] = useState([]);
+  console.log(chatMessage)
 
   useEffect(() => {
     const socket = io("http://localhost:8000");
@@ -27,7 +26,8 @@ function App() {
     socket.on("isTyping", (message) =>{
       setIsTyping(message)
     })
-  },[]);
+   
+  },[chatMessage]);
  
   const enteredMessageHandler = (currentValue) =>{
     setEnteredMessage(currentValue)
@@ -35,24 +35,29 @@ function App() {
     }
     const sendMessage = () =>{
       socket.emit("message", {
+        ...user,
         id: uuid(),
-        username: "Pelle",
         sendDate: date(),
-        imgUrl: 1,
-        message: enteredMessage,})
+        message: enteredMessage,
+        })
         setEnteredMessage("")
         socket.emit("isTyping", {isTyping: false})
     } 
-
-    if(socket) {
-      
-     
+    if(socket){
     }
- 
+    const sendItem = (url) => {
+      socket.emit("message", {
+        ...user,
+        id: uuid(),
+        sendDate: date(),
+        imageUrl: url,})
+        setEnteredMessage("")
+    }
+    
   return (
     <Layout>
-      <ChatList messageData={chatMessage} />
-      <ChatInput onEnteredMessageHandler={enteredMessageHandler} enteredMessage={enteredMessage} onSendMessage={sendMessage} onIsTyping={isTyping} />
+      <ChatList messageData={chatMessage}  />
+      <ChatInput onEnteredMessageHandler={enteredMessageHandler} enteredMessage={enteredMessage} onSendMessage={sendMessage} onIsTyping={isTyping} onSendItem={sendItem} />
     </Layout>
   );
 }
