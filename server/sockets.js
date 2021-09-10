@@ -11,6 +11,7 @@ function listen(io){
             console.log(`user disconnected ${socket.id}, reason: ${reason}`)
         })
         socket.on("message", (message)=>{
+            console.log(message, '🌕')
             io.emit("message", message)
             console.log(message)
         })

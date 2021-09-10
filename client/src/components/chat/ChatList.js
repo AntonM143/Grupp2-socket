@@ -5,9 +5,10 @@ import './chatScrollbar.module.css';
 const ChatList = ( {messageData} ) => {
   const scrollElement = useRef(null);
   useEffect(() => {
+    const setScrollPosition = () => scrollElement.current.scrollTop = 10000;
     setScrollPosition()
   });
-  const setScrollPosition = () => scrollElement.current.scrollTop = 10000;
+
 
   return (
     <div ref={scrollElement} 
@@ -26,7 +27,7 @@ const ChatList = ( {messageData} ) => {
            
             
           />
-        </div>  
+      </div>
       ))}
     </div>
   )

@@ -1,6 +1,8 @@
 import React from 'react';
 
+
 const ChatItem = ({ username, sendDate, message, avatar, imageUrl }) => {
+
   return (
     <>
       <div className="flex pt-6">
