@@ -19,18 +19,18 @@ function App() {
   const [chatMessage, setChatMessage] = useState([]);
   const [startModal, setStartModal] = useState(true);
   const [user, setUser] = useState();
-  
+  console.log(user)
   useEffect(() => {
     const socket = io("http://localhost:8000");
     setSocket(socket)
-    socket.on("isTyping", (message) =>{
-      setIsTyping(message)
-    })
   },[]);
   
   if (socket) {
     socket.on("message", (message) => {
       setChatMessage([...chatMessage, message])
+    })
+    socket.on("isTyping", (message) =>{
+      setIsTyping(message)
     })
   }
   const enteredMessageHandler = (currentValue) =>{
@@ -39,20 +39,19 @@ function App() {
     }
     const sendMessage = () =>{
       socket.emit("message", {
+        ...user,
         id: uuid(),
-        username: user.username,
         sendDate: date(),
-        imgUrl: 1,
-        message: enteredMessage,})
+        message: enteredMessage,
+      });
         setEnteredMessage("")
         socket.emit("isTyping", {isTyping: false})
     } 
     const usernameHandler = (username) => {
       setUser({
         username,
-        imgUrl: Math.floor(Math.random()),
+        avatar: Math.floor(Math.random() * 3),
       });
-      console.log(user)
       setStartModal(false)
     }
   return (

@@ -18,10 +18,10 @@ const ChatList = ( {messageData} ) => {
           <ChatItem 
             username={message.username}
             sendDate={message.sendDate}
-            imgUrl={message.imgUrl}
+            avatar={message.avatar}
             message={message.message}
           />
-        </div>  
+      </div>
       ))}
     </div>
   )
