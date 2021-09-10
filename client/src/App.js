@@ -74,7 +74,7 @@ function App() {
       {startModal ? <StartModal onUsernameHandler={usernameHandler} /> : 
         <>
           <ChatList messageData={chatMessage} />
-          <ChatInput onEnteredMessageHandler={enteredMessageHandler} enteredMessage={enteredMessage} onSendMessage={sendMessage} onIsTyping={isTyping} onSendItem={sendItem/>
+          <ChatInput onEnteredMessageHandler={enteredMessageHandler} enteredMessage={enteredMessage} onSendMessage={sendMessage} onIsTyping={isTyping} onSendItem={sendItem}/>
         </>
       }
     </Layout>
