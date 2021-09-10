@@ -18,21 +18,26 @@ function App() {
   const [enteredMessage, setEnteredMessage] = useState("");
   const [chatMessage, setChatMessage] = useState([]);
   const [startModal, setStartModal] = useState(true);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   console.log(user)
+
   useEffect(() => {
     const socket = io("http://localhost:8000");
     setSocket(socket)
-  },[]);
-  
-  if (socket) {
     socket.on("message", (message) => {
+      console.log(message)
       setChatMessage([...chatMessage, message])
     })
     socket.on("isTyping", (message) =>{
       setIsTyping(message)
     })
-  }
+    return () => {
+      console.log('CLEANUP 🌎')
+      socket.off('message')
+    }
+  },[chatMessage]);
+
+  
   const enteredMessageHandler = (currentValue) =>{
     setEnteredMessage(currentValue)
     socket.emit("isTyping", {isTyping: true})
