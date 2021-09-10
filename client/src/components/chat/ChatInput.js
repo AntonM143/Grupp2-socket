@@ -11,7 +11,6 @@ const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIs
   onEnteredMessageHandler(e.target.value)
   
   if(e.target.value === "/"){
-    console.log("👀")
     setToggleCommandModule(true)
   }
   
@@ -24,7 +23,7 @@ const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIs
     
   }
   if(e.target.value === ""){
-    console.log("🤷‍♂️")
+   
     setToggleCommandModule(false)
     
   }

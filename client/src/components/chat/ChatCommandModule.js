@@ -29,7 +29,7 @@ const [resultList, setResultList] = useState([])
 
         const search = enteredMessage.trim().replace(reqType, "")
         const response = await request.getImgs(search)
-        console.log(response)
+     
         let imgResult = response.results.map((item)=>{
           return {
             imageUrl: item.urls.thumb,
@@ -42,7 +42,7 @@ const [resultList, setResultList] = useState([])
       
     }
     const requestTimer = setTimeout(()=>{
-      console.log("checking search validation👀")
+  
       SetSearchValidation(enteredMessage.length > 2)
     }, 800)
     if(searchValidation){
@@ -50,13 +50,13 @@ const [resultList, setResultList] = useState([])
 
     }
     return () =>{
-      console.log("CLEANUP IN USEEFFECT")
+    
       clearTimeout(requestTimer)
     }
   },[reqType, searchValidation, enteredMessage])
   
   const commandItemHandler = (command) => {
-    console.log(command)
+ 
   }
  const sendItem = (id) => {
    const imageToSend = resultList.find((item) =>item.id === id)

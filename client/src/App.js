@@ -11,38 +11,41 @@ import date from "./components/handlers/date";
 function App() {
 
  
-  const [isTyping, setIsTyping] = useState({name: "", isTyping: false})
+  const [isTyping, setIsTyping] = useState("")
   const [socket, setSocket] = useState('')
   const [enteredMessage, setEnteredMessage] = useState("");
 
   const [chatMessage, setChatMessage] = useState([]);
   const [startModal, setStartModal] = useState(true);
   const [user, setUser] = useState(null);
-  console.log(user)
+  console.log(user, "👍")
 
 
   useEffect(() => {
     const socket = io("http://localhost:8000");
     setSocket(socket)
+    
+   
+
+    return () => {
+
+      socket.off('message')
+    }
+  },[]);
+
+  
+  if(socket){
     socket.on("message", (message) => {
-      console.log(message)
+      
       setChatMessage([...chatMessage, message])
     })
     socket.on("isTyping", (message) =>{
       setIsTyping(message)
     })
-
-    return () => {
-      console.log('CLEANUP 🌎')
-      socket.off('message')
-    }
-  },[chatMessage]);
-
-  
-
+  }
   const enteredMessageHandler = (currentValue) =>{
     setEnteredMessage(currentValue)
-    socket.emit("isTyping", {isTyping: true})
+    socket.emit("isTyping", {name: user.username, isTyping: true})
     }
     const sendMessage = () =>{
       socket.emit("message", {
@@ -68,6 +71,7 @@ function App() {
         sendDate: date(),
         imageUrl: url,})
         setEnteredMessage("")
+        socket.emit("isTyping", {isTyping: false})
     }
   return (
     <Layout>
