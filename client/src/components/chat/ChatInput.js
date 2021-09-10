@@ -34,10 +34,13 @@ const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIs
    e.preventDefault()
   onSendMessage()
  }
+ const onClose = () =>{
+  setToggleCommandModule(false)
+}
 
   return (
     <div className="container mx-auto bg-gray-800">
-      {toggleCommandModule && <ChatCommandModule reqType={reqType} enteredMessage={enteredMessage} onSendItem={onSendItem}  />}
+      {toggleCommandModule && <ChatCommandModule onClose={onClose} reqType={reqType} enteredMessage={enteredMessage} onSendItem={onSendItem}  />}
       <div className="flex content-center justify-center mx-auto">
         <div className="flex break-normal justify-between w-full text-gray-50 px-4 my-5 py-3 font-semibold rounded-xl bg-gray-600">
         {onIsTyping.isTyping && onIsTyping.name + ' is typing..'}

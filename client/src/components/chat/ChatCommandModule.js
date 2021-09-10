@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import request from "../handlers/request"
 
 
-const ChatCommandModule = ({reqType, enteredMessage, onSendItem}) => {
+const ChatCommandModule = ({reqType, enteredMessage, onSendItem, onClose}) => {
 
   const commandItems = ['gif', 'img', 'kick']
   const moduleItemStyle = "p-1 py-4 rounded-md hover:bg-gray-800 flex flex-1 cursor-pointer "
@@ -13,8 +13,8 @@ const [resultList, setResultList] = useState([])
   useEffect(()=>{
     const fetchData = async(reqType) =>{
       if (reqType === "/gif") {
+
         const search = enteredMessage.trim().replace(reqType, "")
-        
         const response = await request.getGifs(search)
         let gifResult = response.data.map((item)=>{
           
@@ -26,10 +26,10 @@ const [resultList, setResultList] = useState([])
         setResultList(gifResult)
       }
       if(reqType === "/img") {
+
         const search = enteredMessage.trim().replace(reqType, "")
-        
         const response = await request.getImgs(search)
-       
+        console.log(response)
         let imgResult = response.results.map((item)=>{
           return {
             imageUrl: item.urls.thumb,
@@ -61,6 +61,7 @@ const [resultList, setResultList] = useState([])
  const sendItem = (id) => {
    const imageToSend = resultList.find((item) =>item.id === id)
   onSendItem(imageToSend.imageUrl)
+  onClose()
   
  }
   return (
@@ -69,15 +70,15 @@ const [resultList, setResultList] = useState([])
      
        
     
-      <div className="container">
+      <div className="container flex">
       {resultList.map((item) => (
             <ul key={item.id} className="flex">
               
-              <img  onClick={() => {sendItem(item.id)}} src={item.imageUrl} alt="" />
+              <img  className="object-cover" onClick={() => {sendItem(item.id)}} src={item.imageUrl} alt="" />
             </ul>
           ))} 
       </div>
-      
+    { !reqType ?   <>
       {commandItems.map((command) => (
       <ul key={command} className="flex flex-col w-full p-2">
         <li onClick={
@@ -87,6 +88,7 @@ const [resultList, setResultList] = useState([])
         </li>
       </ul>
     ))}
+    </> : " "}
     </div>
   )
 }

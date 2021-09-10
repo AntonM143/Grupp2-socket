@@ -13,14 +13,21 @@ function App() {
   const [isTyping, setIsTyping] = useState({name: "", isTyping: false})
   const [socket, setSocket] = useState(null)
   const [enteredMessage, setEnteredMessage] = useState("");
-  
+  const [user, setUser] = useState({username: "Olle", avatar: 1})
   const [chatMessage, setChatMessage] = useState([]);
+  console.log(chatMessage)
 
   useEffect(() => {
     const socket = io("http://localhost:8000");
     setSocket(socket)
+    socket.on("message", (message) => {
+      setChatMessage([...chatMessage, message])
+    })
+    socket.on("isTyping", (message) =>{
+      setIsTyping(message)
+    })
    
-  },[]);
+  },[chatMessage]);
  
   const enteredMessageHandler = (currentValue) =>{
     setEnteredMessage(currentValue)
@@ -28,29 +35,25 @@ function App() {
     }
     const sendMessage = () =>{
       socket.emit("message", {
+        ...user,
         id: uuid(),
-        username: "Pelle",
         sendDate: date(),
-        avatar: 1,
         message: enteredMessage,
         })
         setEnteredMessage("")
         socket.emit("isTyping", {isTyping: false})
     } 
     if(socket){
-      socket.on("message", (message) => {
-        setChatMessage([...chatMessage, message])
-      })
-      socket.on("isTyping", (message) =>{
-        setIsTyping(message)
-      })
     }
     const sendItem = (url) => {
-      setChatMessage([...chatMessage, url])
-      socket.emit("message", {imageUrl: url})
-      
+      socket.emit("message", {
+        ...user,
+        id: uuid(),
+        sendDate: date(),
+        imageUrl: url,})
+        setEnteredMessage("")
     }
- 
+    
   return (
     <Layout>
       <ChatList messageData={chatMessage}  />

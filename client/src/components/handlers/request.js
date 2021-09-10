@@ -5,7 +5,7 @@ const getGifs = async (search) => {
   }
   
   const getImgs = async (search) => {
-    const fetchImages = await fetch(`https://api.unsplash.com/search/photos?page=1&query=${search}`, {
+    const fetchImages = await fetch(`https://api.unsplash.com/search/photos?page=1&per_page=5&query=${search}`, {
       method: 'GET',
       headers: {
         "Authorization": "Client-ID lU_jTDuxL1RXnVaEjSjM_UK4eI48LzcBLWIY98Gae44"

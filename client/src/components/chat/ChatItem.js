@@ -6,7 +6,7 @@ const ChatItem = ({ username, sendDate, message, avatar, imageUrl }) => {
       <div className="flex pt-6">
         <div className="flex items-start mx-3">   
           <div className="w-16">
-            {/* <img className="object-contain h-full w-full" src={require(`../../assets/${avatar}.png`).default} alt="" /> */}
+            <img className="object-contain h-full w-full" src={require(`../../assets/${avatar}.png`).default} alt="" />
           </div>
         </div>
         <div className="flex flex-col">
