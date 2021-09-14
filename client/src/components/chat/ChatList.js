@@ -9,23 +9,21 @@ const ChatList = ( {messageData} ) => {
     setScrollPosition()
   });
 
+  console.log(messageData)
 
   return (
     <div ref={scrollElement} 
-    
-      className="flex flex-auto flex-col container mx-auto overflow-auto">
+      className="flex flex-col flex-auto container mx-auto overflow-auto">
       {messageData.map((message) => (
         <div key={message.id}>
-          
           <ChatItem 
             username={message.username}
             sendDate={message.sendDate}
             avatar={message.avatar}
             message={message.message}
             imageUrl={message.imageUrl}
-
-           
-            
+            userAction={message.userAction}
+            type={message.type}
           />
       </div>
       ))}
