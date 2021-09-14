@@ -13,8 +13,8 @@ const getGifs = async (search) => {
     })
     return await fetchImages.json();
   }
-  
+
   module.exports = {
     getGifs,
-    getImgs
+    getImgs,
   }

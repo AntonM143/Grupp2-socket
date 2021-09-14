@@ -1,10 +1,25 @@
 import React from 'react';
 
 
-const ChatItem = ({ username, sendDate, message, avatar, imageUrl }) => {
+const ChatItem = ({ username, sendDate, message, avatar, imageUrl, userAction, type }) => {
+  console.log(userAction)
+  let action
+
+    if(type === 'JOIN') {
+      return action = <p className="text-green-500 font-semibold">{userAction}</p>
+    }
+
+    if(type === 'LEAVE') {
+      return action = <p className="text-yellow-500 font-semibold">{userAction}</p>
+    }
+    
+    if(type === 'DISCONNECT') {
+      return action = <p className="text-red-500 font-semibold">{userAction}</p>
+    }
 
   return (
     <>
+      { action ? action : 
       <div className="flex pt-6">
         <div className="flex items-start mx-3">   
           <div className="w-16">
@@ -17,9 +32,10 @@ const ChatItem = ({ username, sendDate, message, avatar, imageUrl }) => {
             <p className="font-extralight px-3 text-xs italic text-gray-400">{sendDate}</p>
           </header>
             <p className="text-gray-50 font-semibold">{message}</p>
-            <img src={imageUrl} alt="" />
+            {imageUrl ? <img src={imageUrl} alt="" /> : null}
         </div>
       </div>
+      }
     </>
   )
 }

@@ -7,28 +7,23 @@ const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIs
   const [toggleCommandModule, setToggleCommandModule] = useState(false)
   const [reqType, setReqType] = useState("")
 
-   const inputHandler = (e) =>{
+  const inputHandler = (e) =>{
   onEnteredMessageHandler(e.target.value)
   
-  if(e.target.value === "/"){
-    setToggleCommandModule(true)
+    if(e.target.value === "/"){
+      setToggleCommandModule(true)
+    }
+    if(e.target.value === "/gif"){
+      setReqType("/gif")
+    }
+    if(e.target.value === "/img"){
+      setReqType("/img")
+    }
+    if(e.target.value === ""){
+      setToggleCommandModule(false)
+    }
   }
-  
-  if(e.target.value === "/gif"){
-    setReqType("/gif")
-    
-  }
-  if(e.target.value === "/img"){
-    setReqType("/img")
-    
-  }
-  if(e.target.value === ""){
-   
-    setToggleCommandModule(false)
-    
-  }
-  
- }
+
  const sendMessage = (e) =>{
    e.preventDefault()
   onSendMessage()
@@ -37,13 +32,19 @@ const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIs
   setToggleCommandModule(false)
 }
 
+const onEnter = (e) => {
+  if (e.nativeEvent.key === 'Enter') {
+    onSendMessage()
+  }
+}
+
   return (
     <div className="container mx-auto bg-gray-800">
+      {onIsTyping.isTyping && <p className="font-semibold text-gray-50">{`${onIsTyping.name} is typing..`}</p>}
       {toggleCommandModule && <ChatCommandModule onClose={onClose} reqType={reqType} enteredMessage={enteredMessage} onSendItem={onSendItem}  />}
       <div className="flex content-center justify-center mx-auto">
         <div className="flex break-normal justify-between w-full text-gray-50 px-4 my-5 py-3 font-semibold rounded-xl bg-gray-600">
-        {onIsTyping.isTyping && onIsTyping.name + ' is typing..'}
-          <input onChange={inputHandler} value={enteredMessage} 
+          <input onKeyUp={onEnter} onChange={inputHandler} value={enteredMessage} 
             className="flex flex-col w-11/12 justify-center text-gray-50 px-2 font-semibold bg-gray-600"
           />
           <div className="rounded-full object-contain text-2xl mx-2 cursor-pointer transition duration-500 ease-in-out hover:bg-gray-800 transform hover:scale-110">
