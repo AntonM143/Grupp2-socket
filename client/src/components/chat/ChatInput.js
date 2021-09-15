@@ -27,9 +27,11 @@ const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIs
  const sendMessage = (e) =>{
    e.preventDefault()
   onSendMessage()
+
  }
  const onClose = () =>{
   setToggleCommandModule(false)
+  setReqType('')
 }
 
 const onEnter = (e) => {

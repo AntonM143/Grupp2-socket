@@ -12,6 +12,8 @@ import date from "./handlers/date";
 
 const socket = io("http://localhost:8000");
 
+
+
 function App() {
   const [modalIsOpen, setModalisOpen] = useState(false);
   const [rooms, setRooms] = useState([]);
@@ -21,24 +23,51 @@ function App() {
   const [startModal, setStartModal] = useState(true);
   const [user, setUser] = useState('');
   const [currentRoom, setCurrentRoom] = useState(null);
-
+  console.log(currentRoom)
   useEffect(() => {
     socket.on('getRooms', (rooms) => {
-      setRooms(rooms)
+      setRooms(rooms);
     })
     socket.on("message", (message) => {
       setChatMessage((prevState) => [...prevState, message]);
     })
-    socket.on("isTyping", (message) =>{
-      setIsTyping(message)
-    })
+      socket.on("isTyping", (message) =>{
+        setIsTyping(message);
+      })
     socket.on('updateRooms', (rooms) => {
-      setRooms(rooms)
+      setRooms(rooms);
     })
+    socket.on('passwordFailed', (text) => {
+      alert(text.message);
+      return;
+    })
+
+    socket.on('passwordJoin', (status) => {
+      console.log(currentRoom, '😄')
+      socket.emit('leave', currentRoom);
+      console.log(status.message, '😍')
+      setCurrentRoom(status.roomId)
+      console.log(status.roomId, '🐢')
+      setChatMessage([])
+      console.log(currentRoom, 'nya currentRoom')
+      return
+    })
+  
+    socket.on('noPassword', (status) => {
+      console.log(currentRoom, '😄')
+      socket.emit('leave', currentRoom);
+      console.log(status.message, '🥰')
+      console.log(status.roomId, '🥰')
+      setCurrentRoom(status.roomId)
+      setChatMessage([])
+      return
+    })
+
+    
     return () => {
-      socket.off('message')
+      socket.off('message');
     }
-  }, []);
+  }, [currentRoom]);
   
   const enteredMessageHandler = (currentValue) =>{
     setEnteredMessage(currentValue)
@@ -65,8 +94,11 @@ function App() {
     }
     
     const confirmUsername = () => {
+      if (!user) {
+        return;
+      }
       setStartModal(false)
-      socket.emit('join', { roomId: currentRoom, user });
+      socket.emit('firstJoin', { roomId: currentRoom, user });
     }
 
     const sendItem = (url) => {
@@ -78,32 +110,28 @@ function App() {
         currentRoom: currentRoom,
       })
         setEnteredMessage("")
-        socket.emit("isTyping", { isTyping: false })
+        socket.emit("isTyping", { isTyping: false, currentRoom })
     }
 
     const roomHandler = (roomId) => {
-      console.log(currentRoom)
-      socket.emit('leave', currentRoom);
-      socket.emit('join', { roomId, user });
-      setCurrentRoom(roomId)
-      setChatMessage([])
+      socket.emit('join', { roomId, user, password: '123' });
     }
 
     const addRoom = (roomName, password) => {
-      socket.emit('addRoom', { roomName, password })
-
+      socket.emit('addRoom', { roomName, password });
       setModalisOpen(false)
     }
 
     const toggleModal = () => setModalisOpen(!modalIsOpen)
-    console.log(rooms)
+
   return (
     <Layout>
     { modalIsOpen && <RoomModal onAddRoom={addRoom} />}
       {startModal ? <StartModal onConfirm={confirmUsername} onUsernameHandler={usernameHandler} /> : 
         <>
-          <RoomList onToggle={toggleModal} onRoomHandler={roomHandler} roomsData={rooms} />
+          <RoomList onToggle={toggleModal} onRoomHandler={roomHandler} roomsData={rooms} highlightedRoom={currentRoom} />
           <ChatWrapper>
+            <header className="bg-gray-700 font-bold text-gray-50 p-2 border-b border-gray-900">#PUBLIC</header>
             <ChatList messageData={chatMessage} />
             <ChatInput 
               onIsTyping={isTyping}

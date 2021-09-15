@@ -2,7 +2,7 @@ import React from 'react';
 
 
 const ChatItem = ({ username, sendDate, message, avatar, imageUrl, userAction, type }) => {
-  console.log(userAction)
+  
   let action
 
     if(type === 'JOIN') {

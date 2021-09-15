@@ -11,4 +11,4 @@ const RoomItem = (props) => {
   )
 }
 
-export default RoomItem
+export default RoomItem;

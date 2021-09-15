@@ -7,7 +7,7 @@ const StartModal = ({ onUsernameHandler, onConfirm }) => {
   const enteredUsernameHandler = (e) => {
     onUsernameHandler(e.target.value)
   }
-  
+
   const onChatHandler = () => {
     onConfirm()
   }
@@ -25,10 +25,10 @@ const StartModal = ({ onUsernameHandler, onConfirm }) => {
             autoFocus
             onChange={enteredUsernameHandler} 
             placeholder="Enter nickname"
-            className="bg-gray-800 my-4 py-1 px-1 text-center rounded font-semibold text-gray-50" 
+            className="bg-gray-800 my-4 py-1 px-1 text-center rounded font-semibold text-gray-50 focus:shadow-lg" 
             type="text"
           />
-          <button  className="bg-gray-800 rounded font-bold px-4 py-2 hover:bg-gray-700" onClick={onChatHandler}>Start Chat!</button>
+          <button className="bg-gray-800 rounded font-bold px-4 py-2 hover:bg-gray-700" onClick={onChatHandler}>Start Chat!</button>
         </div>
     </div>
     </>

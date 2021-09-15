@@ -29,7 +29,7 @@ const ChatCommandModule = ({reqType, enteredMessage, onSendItem, onClose}) => {
             id: item.id
           }
         });
-        setResultList(imgResult)
+        setResultList(imgResult);
       }
     }
     const requestTimer = setTimeout(()=>{
@@ -51,6 +51,7 @@ const ChatCommandModule = ({reqType, enteredMessage, onSendItem, onClose}) => {
   onSendItem(imageToSend.imageUrl)
   onClose()
  }
+ 
   return (
     <div className="flex flex-col shadow-2xl rounded-xl bg-gray-800 w-full text-gray-400 font-semibold container mx-auto">
       <div className="border rounded-xl border-gray-900">
@@ -77,7 +78,7 @@ const ChatCommandModule = ({reqType, enteredMessage, onSendItem, onClose}) => {
         </li>
       </ul>
     ))}
-    </> : " "}
+    </> : ""}
     </div>
     </div>
   )

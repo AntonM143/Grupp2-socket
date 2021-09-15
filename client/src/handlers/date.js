@@ -1,7 +1,8 @@
 const date = () => {
     let today = new Date();
-    let time = today.getHours() + ":" + today.getMinutes();
-    return time;
+    const hour = today.getHours()
+    const minutes = today.getMinutes()
+    return `${hour}:${minutes < 10 ? '0' : ''}${minutes}`;
   }
 
   export default date;
