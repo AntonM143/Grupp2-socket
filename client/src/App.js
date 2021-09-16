@@ -12,6 +12,8 @@ import date from "./handlers/date";
 
 const socket = io("http://localhost:8000");
 
+
+
 function App() {
   const [modalIsOpen, setModalisOpen] = useState(false);
   const [rooms, setRooms] = useState([]);
@@ -24,19 +26,35 @@ function App() {
 
   useEffect(() => {
     socket.on('getRooms', (rooms) => {
-      setRooms(rooms)
+      setRooms(rooms);
     })
     socket.on("message", (message) => {
       setChatMessage((prevState) => [...prevState, message]);
     })
-    socket.on("isTyping", (message) =>{
-      setIsTyping(message)
-    })
+      socket.on("isTyping", (message) =>{
+        setIsTyping(message);
+      })
     socket.on('updateRooms', (rooms) => {
-      setRooms(rooms)
+      setRooms(rooms);
+    })
+    socket.on('passwordFailed', (text) => {
+      alert(text.message);
+      return;
+    })
+
+    socket.on('passwordJoin', (status) => {
+      setCurrentRoom(status.roomId)
+      setChatMessage([])
+    })
+  
+    socket.on('noPassword', (status) => {
+      console.log('💧💧💧💧💧💧💧💧💧💧')
+      setCurrentRoom(status.roomId)
+      setChatMessage([])
     })
     return () => {
-      socket.off('message')
+      console.log('CLEANUP')
+      socket.off('message');
     }
   }, []);
   
@@ -61,12 +79,15 @@ function App() {
         username,
         avatar: Math.floor(Math.random() * 3),
       });
-      setCurrentRoom(rooms[0].id)
+      setCurrentRoom(rooms[0].id);
     }
     
     const confirmUsername = () => {
+      if (!user) {
+        return;
+      }
       setStartModal(false)
-      socket.emit('join', { roomId: currentRoom, user });
+      socket.emit('firstJoin', { roomId: currentRoom, user });
     }
 
     const sendItem = (url) => {
@@ -78,32 +99,28 @@ function App() {
         currentRoom: currentRoom,
       })
         setEnteredMessage("")
-        socket.emit("isTyping", { isTyping: false })
+        socket.emit("isTyping", { isTyping: false, currentRoom })
     }
 
     const roomHandler = (roomId) => {
-      console.log(currentRoom)
-      socket.emit('leave', currentRoom);
-      socket.emit('join', { roomId, user });
-      setCurrentRoom(roomId)
-      setChatMessage([])
+      socket.emit('join', { roomId, user, password: '12123asd3' });
     }
 
     const addRoom = (roomName, password) => {
-      socket.emit('addRoom', { roomName, password })
-
+      socket.emit('addRoom', { roomName, password });
       setModalisOpen(false)
     }
-
     const toggleModal = () => setModalisOpen(!modalIsOpen)
-    console.log(rooms)
+
+    console.log(currentRoom)
   return (
     <Layout>
     { modalIsOpen && <RoomModal onAddRoom={addRoom} />}
       {startModal ? <StartModal onConfirm={confirmUsername} onUsernameHandler={usernameHandler} /> : 
         <>
-          <RoomList onToggle={toggleModal} onRoomHandler={roomHandler} roomsData={rooms} />
+          <RoomList onToggle={toggleModal} onRoomHandler={roomHandler} roomsData={rooms} highlightedRoom={currentRoom} />
           <ChatWrapper>
+            <header className="bg-gray-700 font-bold text-gray-50 p-2 border-b border-gray-900">#PUBLIC</header>
             <ChatList messageData={chatMessage} />
             <ChatInput 
               onIsTyping={isTyping}

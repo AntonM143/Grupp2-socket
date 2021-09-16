@@ -9,7 +9,7 @@ const backdropStyle= {
   width: "100%",
   height: "100vh",
   zIndex: 45,
-  background: "rgba(0, 0, 0, 0.75)"
+  background: "rgba(10, 5, 5, 0.50)"
 }
 const ModalBackdrop = (props) => {
   return <div onClick={props.onClose} style={backdropStyle} />;

@@ -1,13 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { IoMdChatboxes } from 'react-icons/io'
 import RoomItem from './RoomItem'
 
 const RoomList = (props) => {
-  const [highlightedRoom, setHighlightedRoom] = useState(1);
-
-  const highlightedRoomHandler = (id) => {
-    setHighlightedRoom(id)
-  }
+  
 
 const sendRoom = (id) => {
   props.onRoomHandler(id)
@@ -24,7 +20,7 @@ const toggleModal = () => {
           <p className="text-gray-50 font-semibold">ChattApp</p>
         </header>
         {props.roomsData.map((room) => (
-          <div onClick={() => {highlightedRoomHandler(room.id)}} key={room.id} className={room.id === highlightedRoom ? "bg-gray-800 shadow-inner" : ''}>
+          <div key={room.id} className={room.id === props.highlightedRoom ? "bg-gray-800 shadow-inner" : ''}>
             <ul onClick={() => sendRoom(room.id)} className="flex flex-col">
               <RoomItem  id={room.id} name={room.name} />
             </ul>

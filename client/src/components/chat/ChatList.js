@@ -9,9 +9,9 @@ const ChatList = ( {messageData} ) => {
     setScrollPosition()
   });
 
-  console.log(messageData)
 
   return (
+    <>
     <div ref={scrollElement} 
       className="flex flex-col flex-auto container mx-auto overflow-auto">
       {messageData.map((message) => (
@@ -28,6 +28,7 @@ const ChatList = ( {messageData} ) => {
       </div>
       ))}
     </div>
+    </>
   )
 }
 
