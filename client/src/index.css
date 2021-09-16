@@ -14,7 +14,7 @@ code {
     monospace;
 }
 
-input[type="text"] {
+input {
   outline: none;
   -webkit-appearance: none;
 }
