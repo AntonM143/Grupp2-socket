@@ -14,6 +14,7 @@ const passwordRef = useRef()
       <div className="flex flex-col text-gray-50 font-semibold border border-gray-900 bg-gray-700 shadow-2xl items-center py-10 px-4 w-full xl:w-1/3 lg:w-2/3 md:2/3 mx-auto z-50">
       <header>Create Room</header>
         <input
+        
           autoFocus
           placeholder="Room Name"
           ref={roomNameRef} className="text-gray-50 m-4 bg-gray-900 w-2/3 p-1"

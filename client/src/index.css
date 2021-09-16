@@ -10,28 +10,28 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
-input{
+input[type="text"] {
   outline: none;
   -webkit-appearance: none;
 }
 
-.fade-enter{
+.fade-enter {
   opacity: 0;
 }
-.fade-exit{
+.fade-exit {
   opacity: 1;
 }
-.fade-enter-active{
+.fade-enter-active {
   opacity: 1;
 }
-.fade-exit-active{
+.fade-exit-active {
   opacity: 0;
 }
 .fade-enter-active,
-.fade-exit-active{
+.fade-exit-active {
   transition: opacity 500ms;
 }
