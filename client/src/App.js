@@ -23,7 +23,7 @@ function App() {
   const [startModal, setStartModal] = useState(true);
   const [user, setUser] = useState('');
   const [currentRoom, setCurrentRoom] = useState(null);
-  console.log(currentRoom)
+
   useEffect(() => {
     socket.on('getRooms', (rooms) => {
       setRooms(rooms);
@@ -43,31 +43,20 @@ function App() {
     })
 
     socket.on('passwordJoin', (status) => {
-      console.log(currentRoom, '😄')
-      socket.emit('leave', currentRoom);
-      console.log(status.message, '😍')
       setCurrentRoom(status.roomId)
-      console.log(status.roomId, '🐢')
       setChatMessage([])
-      console.log(currentRoom, 'nya currentRoom')
-      return
     })
   
     socket.on('noPassword', (status) => {
-      console.log(currentRoom, '😄')
-      socket.emit('leave', currentRoom);
-      console.log(status.message, '🥰')
-      console.log(status.roomId, '🥰')
+      console.log('💧💧💧💧💧💧💧💧💧💧')
       setCurrentRoom(status.roomId)
       setChatMessage([])
-      return
     })
-
-    
     return () => {
+      console.log('CLEANUP')
       socket.off('message');
     }
-  }, [currentRoom]);
+  }, []);
   
   const enteredMessageHandler = (currentValue) =>{
     setEnteredMessage(currentValue)
@@ -90,7 +79,7 @@ function App() {
         username,
         avatar: Math.floor(Math.random() * 3),
       });
-      setCurrentRoom(rooms[0].id)
+      setCurrentRoom(rooms[0].id);
     }
     
     const confirmUsername = () => {
@@ -114,16 +103,16 @@ function App() {
     }
 
     const roomHandler = (roomId) => {
-      socket.emit('join', { roomId, user, password: '123' });
+      socket.emit('join', { roomId, user, password: '12123asd3' });
     }
 
     const addRoom = (roomName, password) => {
       socket.emit('addRoom', { roomName, password });
       setModalisOpen(false)
     }
-
     const toggleModal = () => setModalisOpen(!modalIsOpen)
 
+    console.log(currentRoom)
   return (
     <Layout>
     { modalIsOpen && <RoomModal onAddRoom={addRoom} />}
