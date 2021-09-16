@@ -6,15 +6,15 @@ const ChatItem = ({ username, sendDate, message, avatar, imageUrl, userAction, t
   let action
 
     if(type === 'JOIN') {
-      return action = <p className="text-green-500 font-semibold">{userAction}</p>
+      return action = <p className="text-green-500 font-semibold m-1 p-1">{userAction}</p>
     }
 
     if(type === 'LEAVE') {
-      return action = <p className="text-yellow-500 font-semibold">{userAction}</p>
+      return action = <p className="text-yellow-500 font-semibold m-1 p-1">{userAction}</p>
     }
     
     if(type === 'DISCONNECT') {
-      return action = <p className="text-red-500 font-semibold">{userAction}</p>
+      return action = <p className="text-red-500 font-semibold m-1 p-1">{userAction}</p>
     }
 
   return (
@@ -33,6 +33,7 @@ const ChatItem = ({ username, sendDate, message, avatar, imageUrl, userAction, t
           </header>
             <p className="text-gray-50 font-semibold">{message}</p>
             {imageUrl ? <img src={imageUrl} alt="" /> : null}
+            
         </div>
       </div>
       }

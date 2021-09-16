@@ -3,7 +3,7 @@ import { FaRegPaperPlane } from "react-icons/fa";
 import ChatCommandModule from "./ChatCommandModule";
 
 
-const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIsTyping, onSendItem}) => {
+const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIsTyping, onSendItem, onShrug}) => {
   const [toggleCommandModule, setToggleCommandModule] = useState(false)
   const [reqType, setReqType] = useState("")
 
@@ -11,6 +11,7 @@ const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIs
   onEnteredMessageHandler(e.target.value)
   
     if(e.target.value === "/"){
+     
       setToggleCommandModule(true)
     }
     if(e.target.value === "/gif"){
@@ -19,7 +20,12 @@ const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIs
     if(e.target.value === "/img"){
       setReqType("/img")
     }
+    if(e.target.value === "/shrug"){
+      onShrug()
+     
+    }
     if(e.target.value === ""){
+      setReqType('')
       setToggleCommandModule(false)
     }
   }
@@ -27,6 +33,7 @@ const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIs
  const sendMessage = (e) =>{
    e.preventDefault()
   onSendMessage()
+  setToggleCommandModule(false)
 
  }
  const onClose = () =>{
@@ -37,6 +44,7 @@ const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIs
 const onEnter = (e) => {
   if (e.nativeEvent.key === 'Enter') {
     onSendMessage()
+    setToggleCommandModule(false)
   }
 }
 

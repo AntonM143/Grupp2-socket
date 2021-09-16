@@ -32,28 +32,41 @@ function listen(io){
             rooms[index].users = updatedUsers
             console.log(rooms) */
         });
- 
+        
+      
+
+
         socket.on('firstJoin', ({ roomId, user, password }) => {
             const index = findIndexById(rooms, roomId)
             rooms[index].users.push({ user: user.username, id: socket.id })
             socket.join(roomId);
         })
 
-        socket.on('join', ({ roomId, user, password }) => {
+        socket.on('join', ({ roomId, user }) => {
             const currentRoom = getCurrentRoom(rooms, socket);
- 
             const index = findIndexById(rooms, roomId)
             const previousIndex = findIndexById(rooms, currentRoom.id)
-    
-            socket.leave(currentRoom.id)
+            console.log(roomId, "🤦‍♀️")
+          /*   socket.leave(currentRoom.id)
             
             const updatedUsers = rooms[previousIndex].users.filter(user => user.id !== socket.id)
-            rooms[previousIndex].users = updatedUsers
+            rooms[previousIndex].users = updatedUsers */
            
         
             if (rooms[index].password) {
-                if (rooms[index].password === password) {
-             
+              
+                socket.emit("passwordReq",  "roomId")
+                /* Är det fel att använda once här? */
+                socket.once("confirmPassword", (password) => {
+                 
+                    socket.leave(currentRoom.id)
+                    const updatedUsers = rooms[previousIndex].users.filter(user => user.id !== socket.id)
+                    rooms[previousIndex].users = updatedUsers
+               
+                   if (rooms[index].password === password) {
+
+                    
+                    
                     rooms[index].users.push({ user: user.username, id: socket.id })
                     socket.join(roomId);
                   
@@ -62,20 +75,30 @@ function listen(io){
           
     
                     socket.emit('passwordJoin', { roomId, message: 'Success!' });
-                    console.log(rooms)
+                    console.log("🎶🎶🎶🎶🎶🎶🎶🎶🎶🎶🎶🎶🎶🎶")
+                    console.log(rooms, "i join-> if")
                     return;
                 } else {
-                    socket.emit('passwordFailed', { message: 'FAIL' });
+                    
+                    socket.emit('passwordFailed', { message: 'Wrong password, please try again!', isError: true });
                     socket.join(currentRoom.id);
                     rooms[previousIndex].users.push({ user: user.username, id: socket.id })
-
+                    console.log("🎶🎶🎶🎶🎶🎶🎶🎶🎶🎶🎶🎶🎶🎶")
+                    console.log(rooms, "i join-> else")
                     return;
-                }
+                } 
+                })
+                
+                
             } else {
+                socket.leave(currentRoom.id)
+                    const updatedUsers = rooms[previousIndex].users.filter(user => user.id !== socket.id)
+                    rooms[previousIndex].users = updatedUsers
                 socket.join(roomId);
                 socket.emit('noPassword', {roomId, message: 'Joined Room without Password'})
                 rooms[index].users.push({ user: user.username, id: socket.id })
-                console.log(roomId)
+                
+                console.log(rooms, "i else-> else")
                 socket.to(roomId).emit("message", { userAction: `${user.username} joined the chat`, type: 'JOIN' });
           
                 socket.to(currentRoom.id).emit("message", { userAction: `${user.username} left the chat`, type: 'LEAVE' });

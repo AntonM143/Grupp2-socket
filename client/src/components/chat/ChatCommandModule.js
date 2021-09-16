@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import request from "../../handlers/request"
 
 const ChatCommandModule = ({reqType, enteredMessage, onSendItem, onClose}) => {
-  const commandItems = ['gif', 'img', 'kick']
+  const commandItems = ['gif', 'img', 'shrug']
   const moduleItemStyle = "p-1 py-4 rounded-md hover:bg-gray-800 flex flex-1 cursor-pointer "
   const [searchValidation, SetSearchValidation] = useState(false)
   const [resultList, setResultList] = useState([])

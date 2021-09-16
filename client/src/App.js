@@ -9,6 +9,7 @@ import ChatWrapper from "./components/chat/ChatWrapper";
 import RoomModal from './components/rooms/RoomModal'
 import { v4 as uuid } from "uuid";
 import date from "./handlers/date";
+import RoomPassword from "./components/rooms/RoomPassword";
 
 const socket = io("http://localhost:8000");
 
@@ -23,6 +24,10 @@ function App() {
   const [startModal, setStartModal] = useState(true);
   const [user, setUser] = useState('');
   const [currentRoom, setCurrentRoom] = useState(null);
+  const [shrug, setShrug] = useState(false)
+  const [enteredPassword, setEnteredPassword] = useState(null)
+  const [passwordModal, setPasswordModal] = useState(false)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     socket.on('getRooms', (rooms) => {
@@ -37,40 +42,50 @@ function App() {
     socket.on('updateRooms', (rooms) => {
       setRooms(rooms);
     })
-    socket.on('passwordFailed', (text) => {
-      alert(text.message);
-      return;
-    })
-
+    
+    socket.on('passwordFailed', (error) => {
+    /* alert("wrong password try again") */
+    setError(error)
+    
+     })
     socket.on('passwordJoin', (status) => {
+      setPasswordModal(false)
       setCurrentRoom(status.roomId)
       setChatMessage([])
     })
   
     socket.on('noPassword', (status) => {
-      console.log('💧💧💧💧💧💧💧💧💧💧')
+     
       setCurrentRoom(status.roomId)
       setChatMessage([])
+    })
+    socket.on('passwordReq', (message) => {
+      setPasswordModal(true)
+      
+      
     })
     return () => {
       console.log('CLEANUP')
       socket.off('message');
     }
   }, []);
+ 
   
   const enteredMessageHandler = (currentValue) =>{
     setEnteredMessage(currentValue)
     socket.emit("isTyping", { name: user.username, isTyping: true, currentRoom })
-    }
-    const sendMessage = () =>{
+  }
+  const sendMessage = () =>{
+      const messageToSend = shrug ? enteredMessage.replace("/shrug", "") + " ¯\\_(ツ)_/¯ " : enteredMessage
       socket.emit('message', {
         ...user,
         id: uuid(),
         sendDate: date(),
-        message: enteredMessage,
+        message: messageToSend,
         currentRoom: currentRoom,
       });
         setEnteredMessage("")
+        setShrug(false)
         socket.emit("isTyping", { isTyping: false, currentRoom })
     } 
 
@@ -103,7 +118,7 @@ function App() {
     }
 
     const roomHandler = (roomId) => {
-      socket.emit('join', { roomId, user, password: '12123asd3' });
+      socket.emit('join', { roomId, user, password: enteredPassword});
     }
 
     const addRoom = (roomName, password) => {
@@ -112,15 +127,34 @@ function App() {
     }
     const toggleModal = () => setModalisOpen(!modalIsOpen)
 
-    console.log(currentRoom)
+    const shrugHandler = () => setShrug(true)
+
+    const passwordHandler = (password) =>{
+      setEnteredPassword(password)
+    }
+    const onSubmitRoomPassword = () =>{
+        socket.emit("confirmPassword", enteredPassword)
+        console.log(enteredPassword, "👀")
+  
+    }
+
+
+
+      let correct = rooms.find((room) => currentRoom === room.id)
+    
+      
+    
+ 
   return (
     <Layout>
+    {passwordModal && <RoomPassword onPasswordHandler={passwordHandler} onSubmitRoomPassword={onSubmitRoomPassword} errorHandler={error} />}
     { modalIsOpen && <RoomModal onAddRoom={addRoom} />}
+    
       {startModal ? <StartModal onConfirm={confirmUsername} onUsernameHandler={usernameHandler} /> : 
         <>
           <RoomList onToggle={toggleModal} onRoomHandler={roomHandler} roomsData={rooms} highlightedRoom={currentRoom} />
           <ChatWrapper>
-            <header className="bg-gray-700 font-bold text-gray-50 p-2 border-b border-gray-900">#PUBLIC</header>
+            <header className="bg-gray-700 font-bold text-gray-50 p-2 border-b border-gray-900">{correct.name}</header>
             <ChatList messageData={chatMessage} />
             <ChatInput 
               onIsTyping={isTyping}
@@ -128,6 +162,7 @@ function App() {
               enteredMessage={enteredMessage}
               onSendMessage={sendMessage} 
               onSendItem={sendItem}
+              onShrug={shrugHandler}
             />
           </ChatWrapper>
         </>
