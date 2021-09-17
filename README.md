@@ -1,6 +1,9 @@
 # Grupp2-socket
+Github: https://github.com/AntonM143/Grupp2-socket 
 
 Vi har skapat en chatapp med hjälp av Socketio, nodejs och React.
+vi har parprogrammerat hela arbetet.
+apierna är giphy & unsplash
 
 ## För att starta :
 
@@ -25,3 +28,4 @@ Vi har skapat en chatapp med hjälp av Socketio, nodejs och React.
 - Det ska gå att skapa och joina ett rum med lösenord ✔
 - Lösenord till rum samt vilka sockens (spara socket-id) som tillhör ett rum skall sparas i en separat lista på servern ✔
 - Det ska finnas minst 3 kommandon (minst två olika 3-part API’er) ✔
+
