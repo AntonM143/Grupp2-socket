@@ -1,6 +1,7 @@
 import React,{ useState } from 'react'
 import { FaRegPaperPlane } from "react-icons/fa";
 import ChatCommandModule from "./ChatCommandModule";
+import { v4 as uuid } from 'uuid'
 
 
 const ChatInput = ({enteredMessage, onEnteredMessageHandler, onSendMessage, onIsTyping, onSendItem, onShrug, userData}) => {
@@ -47,13 +48,17 @@ const onEnter = (e) => {
     setToggleCommandModule(false)
   }
 }
+let filteredTypingList
+if(onIsTyping) {
+  filteredTypingList = onIsTyping.filter(user => user.user !== userData.username)
+}
 
 return (
   <div className="container mx-auto bg-gray-800">
-    
-      {onIsTyping && onIsTyping.map(user => (
-        user.isTyping ? <p class="font-extralight px-3 italic text-gray-50">{user.user} is typing...</p> : ''
-      ))}
+      
+      {onIsTyping && filteredTypingList.map(user => (
+        user.isTyping ? <p key={uuid()} className="text-gray-50">{user.user} is typing...</p> : ''
+      )) }
       {toggleCommandModule && <ChatCommandModule onClose={onClose} reqType={reqType} enteredMessage={enteredMessage} onSendItem={onSendItem}  />}
       <div className="flex content-center justify-center mx-auto">
         <div className="flex break-normal justify-between w-full text-gray-50 px-4 my-5 py-3 font-semibold rounded-xl bg-gray-600">

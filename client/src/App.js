@@ -7,7 +7,6 @@ import StartModal from "./components/StartModal";
 import RoomList from "./components/rooms/RoomList";
 import ChatWrapper from "./components/chat/ChatWrapper";
 import RoomModal from './components/rooms/RoomModal'
-import { v4 as uuid } from "uuid";
 import date from "./handlers/date";
 import RoomPassword from "./components/rooms/RoomPassword";
 
@@ -69,7 +68,6 @@ function App() {
       const messageToSend = shrug ? enteredMessage.replace("/shrug", "") + " ¯\\_(ツ)_/¯ " : enteredMessage
       socket.emit('message', {
         ...user,
-        id: uuid(),
         sendDate: date(),
         message: messageToSend,
         currentRoom: currentRoom,
@@ -98,7 +96,6 @@ function App() {
     const sendItem = (url) => {
       socket.emit("message", {
         ...user,
-        id: uuid(),
         sendDate: date(),
         imageUrl: url,
         currentRoom: currentRoom,
