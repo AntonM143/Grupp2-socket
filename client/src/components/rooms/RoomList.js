@@ -6,7 +6,7 @@ const RoomList = (props) => {
   
 
 const sendRoom = (id) => {
-  props.onRoomHandler(id)
+  props.onJoinRoomHandler(id)
 }
 const toggleModal = () => {
   props.onToggle()

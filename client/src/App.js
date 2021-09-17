@@ -16,9 +16,10 @@ const socket = io("http://localhost:8000");
 
 
 function App() {
+  const [roomToJoin, setRoomToJoin] = useState('')
   const [modalIsOpen, setModalisOpen] = useState(false);
   const [rooms, setRooms] = useState([]);
-  const [isTyping, setIsTyping] = useState("")
+  const [isTyping, setIsTyping] = useState()
   const [enteredMessage, setEnteredMessage] = useState("");
   const [chatMessage, setChatMessage] = useState([]);
   const [startModal, setStartModal] = useState(true);
@@ -36,44 +37,33 @@ function App() {
     socket.on("message", (message) => {
       setChatMessage((prevState) => [...prevState, message]);
     })
-      socket.on("isTyping", (message) =>{
-        setIsTyping(message);
+      socket.on("isTyping", (userIsTyping) =>{
+        setIsTyping(userIsTyping);
       })
+
     socket.on('updateRooms', (rooms) => {
       setRooms(rooms);
     })
+
     
-    socket.on('passwordFailed', (error) => {
-    /* alert("wrong password try again") */
-    setError(error)
-    
-     })
-    socket.on('passwordJoin', (status) => {
+    socket.on('joinSuccess', (status) => {
       setPasswordModal(false)
       setCurrentRoom(status.roomId)
-      setChatMessage([])
+      setChatMessage([]);
+    })
+    
+    socket.on('joinFail', (status) => {
+      setError(status)
     })
   
-    socket.on('noPassword', (status) => {
-     
-      setCurrentRoom(status.roomId)
-      setChatMessage([])
-    })
-    socket.on('passwordReq', (message) => {
-      setPasswordModal(true)
-      
-      
-    })
     return () => {
-      console.log('CLEANUP')
       socket.off('message');
     }
   }, []);
- 
-  
+
   const enteredMessageHandler = (currentValue) =>{
     setEnteredMessage(currentValue)
-    socket.emit("isTyping", { name: user.username, isTyping: true, currentRoom })
+    socket.emit("isTyping", { user, isTyping: true, currentRoom })
   }
   const sendMessage = () =>{
       const messageToSend = shrug ? enteredMessage.replace("/shrug", "") + " ¯\\_(ツ)_/¯ " : enteredMessage
@@ -117,8 +107,18 @@ function App() {
         socket.emit("isTyping", { isTyping: false, currentRoom })
     }
 
-    const roomHandler = (roomId) => {
-      socket.emit('join', { roomId, user, password: enteredPassword});
+    const joinRoomHandler = (roomId) => {
+      setRoomToJoin(roomId)
+      const room = rooms.find(room => room.id === roomId)
+      if (room.passwordRequired) {
+        setPasswordModal(true)
+      } else {
+        socket.emit('join', { roomId, user, password: enteredPassword });
+      }
+    }
+
+    const roomHandler = () => {
+      socket.emit('join', { roomId: roomToJoin, user, password: enteredPassword });
     }
 
     const addRoom = (roomName, password) => {
@@ -132,31 +132,22 @@ function App() {
     const passwordHandler = (password) =>{
       setEnteredPassword(password)
     }
-    const onSubmitRoomPassword = () =>{
-        socket.emit("confirmPassword", enteredPassword)
-        console.log(enteredPassword, "👀")
-  
-    }
 
+    let correct = rooms.find((room) => currentRoom === room.id)
 
-
-      let correct = rooms.find((room) => currentRoom === room.id)
-    
-      
-    
- 
   return (
     <Layout>
-    {passwordModal && <RoomPassword onPasswordHandler={passwordHandler} onSubmitRoomPassword={onSubmitRoomPassword} errorHandler={error} />}
+    {passwordModal && <RoomPassword roomHandler={roomHandler} onPasswordHandler={passwordHandler} errorHandler={error} />}
     { modalIsOpen && <RoomModal onAddRoom={addRoom} />}
     
       {startModal ? <StartModal onConfirm={confirmUsername} onUsernameHandler={usernameHandler} /> : 
         <>
-          <RoomList onToggle={toggleModal} onRoomHandler={roomHandler} roomsData={rooms} highlightedRoom={currentRoom} />
+          <RoomList onToggle={toggleModal} onJoinRoomHandler={joinRoomHandler} roomsData={rooms} highlightedRoom={currentRoom} />
           <ChatWrapper>
             <header className="bg-gray-700 font-bold text-gray-50 p-2 border-b border-gray-900">{correct.name}</header>
             <ChatList messageData={chatMessage} />
             <ChatInput 
+              userData={user}
               onIsTyping={isTyping}
               onEnteredMessageHandler={enteredMessageHandler}
               enteredMessage={enteredMessage}

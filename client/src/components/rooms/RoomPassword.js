@@ -2,9 +2,8 @@ import React, {useRef} from 'react'
 
 
 const RoomPassword = (props) => {
-console.log(props.errorHandler)
   const submitPassword = () => {
-    props.onSubmitRoomPassword()
+    props.roomHandler()
   }
 
   return (

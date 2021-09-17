@@ -10,9 +10,24 @@ function getCurrentRoom(roomsData, socket, index) {
   return currentRoom
 }
 
+function mapRoomsToClient(roomsData) {
+
+  const roomsToClient = roomsData.map((room) => {
+    let passwordRequired
+    passwordRequired = room.password === "" ? passwordRequired = false : passwordRequired = true
+        return {
+            id: room.id,
+            name: room.name,
+            passwordRequired,
+        }
+    });
+    return roomsToClient;
+}
+  
 
 module.exports = {
   findIndexById,
-  getCurrentRoom
+  getCurrentRoom,
+  mapRoomsToClient
 
 }
