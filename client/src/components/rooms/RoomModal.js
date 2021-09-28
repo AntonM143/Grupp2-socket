@@ -19,7 +19,7 @@ const Modal = (props) => {
   return (
     <>
      {createPortal(
-       <ModalBackdrop />,
+       <ModalBackdrop onClose={props.onClose} />,
        document.getElementById('backdrop')
      )}
      {createPortal(

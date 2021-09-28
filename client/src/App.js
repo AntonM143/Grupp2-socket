@@ -134,8 +134,8 @@ function App() {
 
   return (
     <Layout>
-    {passwordModal && <RoomPassword roomHandler={roomHandler} onPasswordHandler={passwordHandler} errorHandler={error} />}
-    { modalIsOpen && <RoomModal onAddRoom={addRoom} />}
+    {passwordModal && <RoomPassword onClose={() => {setPasswordModal(false)}} roomHandler={roomHandler} onPasswordHandler={passwordHandler} errorHandler={error} />}
+    { modalIsOpen && <RoomModal onClose={() => setModalisOpen(false)} onAddRoom={addRoom} />}
     
       {startModal ? <StartModal onConfirm={confirmUsername} onUsernameHandler={usernameHandler} /> : 
         <>

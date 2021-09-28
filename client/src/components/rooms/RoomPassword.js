@@ -14,9 +14,12 @@ const RoomPassword = (props) => {
           autoFocus
           placeholder="password"
           className="text-gray-50 m-4 bg-gray-900 w-2/3 p-1" type="text" />
-        <button 
-        onClick={submitPassword}
-        className="bg-gray-800 rounded font-bold px-4 py-2 hover:bg-green-700" >Join</button>
+          <div className="flex">
+            <button 
+            onClick={submitPassword}
+            className="bg-gray-800 rounded font-bold px-4 py-2 hover:bg-green-700 mx-4" >Join</button>
+            <button onClick={props.onClose} className="bg-gray-800 rounded font-bold px-4 py-2 hover:bg-red-700" >Cancel</button>
+          </div>
       </div>
     </div>
   )
