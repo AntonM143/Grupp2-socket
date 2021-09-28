@@ -1,5 +1,3 @@
-import React, {useRef} from 'react'
-
 
 const RoomPassword = (props) => {
   const submitPassword = () => {

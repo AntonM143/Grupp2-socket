@@ -26,6 +26,7 @@ function listen(io){
         socket.on('firstJoin', ({ roomId, user, password }) => {
             const index = findIndexById(rooms, roomId)
             rooms[index].users.push({ user: user.username, id: socket.id })
+            socket.to(roomId).emit("message", { userAction: `${user.username} Joined the room`, type: 'JOIN' });
             socket.join(roomId);
         })
 
@@ -39,12 +40,12 @@ function listen(io){
                 socket.leave(currentRoom.id);
                 const updatedUsers = rooms[previousIndex].users.filter(user => user.id !== socket.id)
                 rooms[previousIndex].users = updatedUsers
-
+                socket.to(currentRoom.id).emit("message", { userAction: `${user.username} Left the room`, type: 'LEAVE' });
 
                 socket.join(roomId);
                 rooms[index].users.push({user: user.username, id: socket.id})
                 socket.emit('joinSuccess', { roomId, message: 'Success! Room Joined!' });
-        
+                socket.to(roomId).emit("message", { userAction: `${user.username} Joined the room`, type: 'JOIN' });
                 return 
             }
 
@@ -52,17 +53,17 @@ function listen(io){
                 socket.leave(currentRoom.id);
                 const updatedUsers = rooms[previousIndex].users.filter(user => user.id !== socket.id)
                 rooms[previousIndex].users = updatedUsers
+                socket.to(currentRoom.id).emit("message", { userAction: `${user.username} Left the room`, type: 'LEAVE' });
                 /* ------------------------ */
                 socket.join(roomId);
-                rooms[index].users.push({user: user.username, id: socket.id})
+                rooms[index].users.push({ user: user.username, id: socket.id })
         
                 // emit joinedChat
                 socket.emit('joinSuccess', { roomId, message: 'Success! Room Joined!' });
+                socket.to(roomId).emit("message", { userAction: `${user.username} Joined the room`, type: 'JOIN' });
                 return
             } else {
                 socket.emit('joinFail', { isError: true, message: 'Wrong Password!' })
-                //emit passwordFailed
- 
                 return
             }  
         })

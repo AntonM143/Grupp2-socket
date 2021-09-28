@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { v4 as uuid } from "uuid";
 import ChatItem from './ChatItem';
 import './chatScrollbar.module.css';
 
@@ -9,13 +10,12 @@ const ChatList = ( {messageData} ) => {
     setScrollPosition()
   });
 
-
   return (
     <>
     <div ref={scrollElement} 
       className="flex flex-col flex-auto container mx-auto overflow-auto">
       {messageData.map((message) => (
-        <div key={message.id}>
+        <div key={uuid()}>
           <ChatItem 
             username={message.username}
             sendDate={message.sendDate}
